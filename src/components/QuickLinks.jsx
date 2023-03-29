@@ -1,13 +1,8 @@
-import Link from 'next/link'
-
-import { Icon } from '@/components/Icon'
+import { Icon } from "@/components/Icon"
+import Link from "next/link"
 
 export function QuickLinks({ children }) {
-  return (
-    <div className="not-prose my-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
-      {children}
-    </div>
-  )
+  return <div className="not-prose my-12 grid grid-cols-1 gap-6 sm:grid-cols-2">{children}</div>
 }
 
 export function QuickLink({ title, description, href, icon }) {
@@ -22,9 +17,7 @@ export function QuickLink({ title, description, href, icon }) {
             {title}
           </Link>
         </h2>
-        <p className="mt-1 text-sm text-slate-700 dark:text-slate-400">
-          {description}
-        </p>
+        <p className="mt-1 text-sm text-slate-700 dark:text-slate-400">{description}</p>
       </div>
     </div>
   )

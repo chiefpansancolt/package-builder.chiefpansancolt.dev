@@ -33,7 +33,7 @@ To install in your org use the url and password below for installing.
 - **URL**: /packaging/installPackage.apexp?p0=04t1U000007vQ5C
 - **PWD**: QuXshu9Q8xbNeK4b
 
->Note: this is a managed package to make it easier to exclude in some senerios for org metrics, but code is fully viewable via the repo.
+> Note: this is a managed package to make it easier to exclude in some senerios for org metrics, but code is fully viewable via the repo.
 
 ### Features
 
