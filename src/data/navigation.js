@@ -4,6 +4,7 @@ const navigation = [
     links: [
       { title: "Getting started", href: "/" },
       { title: "Installation", href: "/docs/installation" },
+      { title: "How to use", href: "/docs/usage" },
     ],
   },
   {
