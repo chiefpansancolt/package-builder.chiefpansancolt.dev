@@ -1,15 +1,13 @@
-import Head from 'next/head'
-import { slugifyWithCounter } from '@sindresorhus/slugify'
-
-import { Layout } from '@/components/Layout'
-
-import 'focus-visible'
-import '@/styles/tailwind.css'
+import { Layout } from "@/components/Layout"
+import "@/styles/tailwind.css"
+import { slugifyWithCounter } from "@sindresorhus/slugify"
+import "focus-visible"
+import Head from "next/head"
 
 function getNodeText(node) {
-  let text = ''
+  let text = ""
   for (let child of node.children ?? []) {
-    if (typeof child === 'string') {
+    if (typeof child === "string") {
       text += child
     }
     text += getNodeText(child)
@@ -21,16 +19,14 @@ function collectHeadings(nodes, slugify = slugifyWithCounter()) {
   let sections = []
 
   for (let node of nodes) {
-    if (node.name === 'h2' || node.name === 'h3') {
+    if (node.name === "h2" || node.name === "h3") {
       let title = getNodeText(node)
       if (title) {
         let id = slugify(title)
         node.attributes.id = id
-        if (node.name === 'h3') {
+        if (node.name === "h3") {
           if (!sections[sections.length - 1]) {
-            throw new Error(
-              'Cannot add `h3` to table of contents without a preceding `h2`'
-            )
+            throw new Error("Cannot add `h3` to table of contents without a preceding `h2`")
           }
           sections[sections.length - 1].children.push({
             ...node.attributes,
@@ -52,14 +48,11 @@ export default function App({ Component, pageProps }) {
   let title = pageProps.markdoc?.frontmatter.title
 
   let pageTitle =
-    pageProps.markdoc?.frontmatter.pageTitle ||
-    `${pageProps.markdoc?.frontmatter.title} - Docs`
+    pageProps.markdoc?.frontmatter.pageTitle || `${pageProps.markdoc?.frontmatter.title} - Docs`
 
   let description = pageProps.markdoc?.frontmatter.description
 
-  let tableOfContents = pageProps.markdoc?.content
-    ? collectHeadings(pageProps.markdoc.content)
-    : []
+  let tableOfContents = pageProps.markdoc?.content ? collectHeadings(pageProps.markdoc.content) : []
 
   return (
     <>

@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { Dialog } from '@headlessui/react'
-
-import { Logomark } from '@/components/Logo'
-import { Navigation } from '@/components/Navigation'
+import { Logomark } from "@/components/Logo"
+import { Navigation } from "@/components/Navigation"
+import { Dialog } from "@headlessui/react"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 
 function MenuIcon(props) {
   return (
@@ -47,12 +46,12 @@ export function MobileNavigation({ navigation }) {
       setIsOpen(false)
     }
 
-    router.events.on('routeChangeComplete', onRouteChange)
-    router.events.on('routeChangeError', onRouteChange)
+    router.events.on("routeChangeComplete", onRouteChange)
+    router.events.on("routeChangeError", onRouteChange)
 
     return () => {
-      router.events.off('routeChangeComplete', onRouteChange)
-      router.events.off('routeChangeError', onRouteChange)
+      router.events.off("routeChangeComplete", onRouteChange)
+      router.events.off("routeChangeError", onRouteChange)
     }
   }, [router, isOpen])
 
@@ -72,13 +71,9 @@ export function MobileNavigation({ navigation }) {
         className="fixed inset-0 z-50 flex items-start overflow-y-auto bg-slate-900/50 pr-10 backdrop-blur lg:hidden"
         aria-label="Navigation"
       >
-        <Dialog.Panel className="min-h-full w-full max-w-xs bg-white px-4 pt-5 pb-12 dark:bg-slate-900 sm:px-6">
+        <Dialog.Panel className="min-h-full w-full max-w-xs bg-white px-4 pb-12 pt-5 dark:bg-slate-900 sm:px-6">
           <div className="flex items-center">
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              aria-label="Close navigation"
-            >
+            <button type="button" onClick={() => setIsOpen(false)} aria-label="Close navigation">
               <CloseIcon className="h-6 w-6 stroke-slate-500" />
             </button>
             <Link href="/" className="ml-6" aria-label="Home page">
