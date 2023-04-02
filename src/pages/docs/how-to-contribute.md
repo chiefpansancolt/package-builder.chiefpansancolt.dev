@@ -11,8 +11,8 @@ and stronger!
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Simplecov
-Material Code of Conduct](https://github.com/chiefpansancolt/package-builder/blob/main/.github/CODE_OF_CONDUCT.md).
+This project and everyone participating in it is governed by the [Package
+Builder Code of Conduct](https://github.com/chiefpansancolt/package-builder/blob/main/.github/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report
 unacceptable behavior to github@chiefpansancolt.dev.
 
