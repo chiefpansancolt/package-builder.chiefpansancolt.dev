@@ -1,6 +1,9 @@
 ---
 title: Installation
-description: Steps for install and setting up package builder.
+nextjs:
+  metadata:
+    title: Simplecov Tailwindcss - Installation
+    description: Steps for install and setting up package builder.
 ---
 
 Find out how to install Package Builder to your org and get it setup for usage!

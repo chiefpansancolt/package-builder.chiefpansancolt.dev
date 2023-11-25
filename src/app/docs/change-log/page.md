@@ -1,6 +1,9 @@
 ---
 title: Change Log
-description: See what has changed from release to release
+nextjs:
+  metadata:
+    title: Simplecov Tailwindcss - Change Log
+    description: See what has changed from release to release.
 ---
 
 ## Version [2.0](https://github.com/chiefpansancolt/package-builder/releases/tag/2.0)

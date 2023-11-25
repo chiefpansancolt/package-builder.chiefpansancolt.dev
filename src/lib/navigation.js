@@ -1,4 +1,4 @@
-const navigation = [
+export const navigation = [
   {
     title: "Introduction",
     links: [
@@ -26,5 +26,3 @@ const navigation = [
     ],
   },
 ]
-
-export default navigation

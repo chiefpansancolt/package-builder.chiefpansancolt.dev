@@ -1,6 +1,9 @@
 ---
 title: How to Use
-description: Learn how to use Package Builder to the fullest.
+nextjs:
+  metadata:
+    title: Simplecov Tailwindcss - How to Use
+    description: Learn how to use Package Builder to the fullest.
 ---
 
 Learn how to use Package Builder to its fullest extent and ensure you know all its features and functionality.

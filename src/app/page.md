@@ -1,7 +1,9 @@
 ---
-title: Getting started
-pageTitle: Package Builder - Getting Started
-description: Getting started with using Package Builder in a Salesforce environment.
+title: Getting Started
+nextjs:
+  metadata:
+    title: Package Builder - Getting Started
+    description: Getting started with using Package Builder in a Salesforce environment.
 ---
 
 Learn how to get Package Builder set up in your Environment.
