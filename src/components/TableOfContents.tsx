@@ -4,10 +4,16 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 
-export function TableOfContents({ tableOfContents }) {
+import { type Section, type Subsection } from '@/lib/sections'
+
+export function TableOfContents({
+  tableOfContents,
+}: {
+  tableOfContents: Array<Section>
+}) {
   let [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id)
 
-  let getHeadings = useCallback((tableOfContents) => {
+  let getHeadings = useCallback((tableOfContents: Array<Section>) => {
     return tableOfContents
       .flatMap((node) => [node.id, ...node.children.map((child) => child.id)])
       .map((id) => {
@@ -20,7 +26,7 @@ export function TableOfContents({ tableOfContents }) {
         let top = window.scrollY + el.getBoundingClientRect().top - scrollMt
         return { id, top }
       })
-      .filter((x) => x !== null)
+      .filter((x): x is { id: string; top: number } => x !== null)
   }, [])
 
   useEffect(() => {
@@ -45,7 +51,7 @@ export function TableOfContents({ tableOfContents }) {
     }
   }, [getHeadings, tableOfContents])
 
-  function isActive(section) {
+  function isActive(section: Section | Subsection) {
     if (section.id === currentSection) {
       return true
     }
@@ -56,7 +62,7 @@ export function TableOfContents({ tableOfContents }) {
   }
 
   return (
-    <div className="hidden xl:sticky xl:top-[4.75rem] xl:-mr-6 xl:block xl:h-[calc(100vh-4.75rem)] xl:flex-none xl:overflow-y-auto xl:py-16 xl:pr-6">
+    <div className="hidden xl:sticky xl:top-19 xl:-mr-6 xl:block xl:h-[calc(100vh-4.75rem)] xl:flex-none xl:overflow-y-auto xl:py-16 xl:pr-6">
       <nav aria-labelledby="on-this-page-title" className="w-56">
         {tableOfContents.length > 0 && (
           <>

@@ -1,6 +1,28 @@
+import { type Node } from '@markdoc/markdoc'
 import { slugifyWithCounter } from '@sindresorhus/slugify'
 
-function isHeadingNode(node) {
+interface HeadingNode extends Node {
+  type: 'heading'
+  attributes: {
+    level: 1 | 2 | 3 | 4 | 5 | 6
+    id?: string
+    [key: string]: unknown
+  }
+}
+
+type H2Node = HeadingNode & {
+  attributes: {
+    level: 2
+  }
+}
+
+type H3Node = HeadingNode & {
+  attributes: {
+    level: 3
+  }
+}
+
+function isHeadingNode(node: Node): node is HeadingNode {
   return (
     node.type === 'heading' &&
     [1, 2, 3, 4, 5, 6].includes(node.attributes.level) &&
@@ -9,15 +31,15 @@ function isHeadingNode(node) {
   )
 }
 
-function isH2Node(node) {
+function isH2Node(node: Node): node is H2Node {
   return isHeadingNode(node) && node.attributes.level === 2
 }
 
-function isH3Node(node) {
+function isH3Node(node: Node): node is H3Node {
   return isHeadingNode(node) && node.attributes.level === 3
 }
 
-function getNodeText(node) {
+function getNodeText(node: Node) {
   let text = ''
   for (let child of node.children ?? []) {
     if (child.type === 'text') {
@@ -28,8 +50,23 @@ function getNodeText(node) {
   return text
 }
 
-export function collectSections(nodes, slugify = slugifyWithCounter()) {
-  let sections = []
+export type Subsection = H3Node['attributes'] & {
+  id: string
+  title: string
+  children?: undefined
+}
+
+export type Section = H2Node['attributes'] & {
+  id: string
+  title: string
+  children: Array<Subsection>
+}
+
+export function collectSections(
+  nodes: Array<Node>,
+  slugify = slugifyWithCounter(),
+) {
+  let sections: Array<Section> = []
 
   for (let node of nodes) {
     if (isH2Node(node) || isH3Node(node)) {

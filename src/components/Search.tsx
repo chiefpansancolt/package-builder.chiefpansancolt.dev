@@ -12,13 +12,28 @@ import {
 } from 'react'
 import Highlighter from 'react-highlight-words'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { createAutocomplete } from '@algolia/autocomplete-core'
-import { Dialog } from '@headlessui/react'
+import {
+  type AutocompleteApi,
+  type AutocompleteCollection,
+  type AutocompleteState,
+  createAutocomplete,
+} from '@algolia/autocomplete-core'
+import { Dialog, DialogPanel } from '@headlessui/react'
 import clsx from 'clsx'
 
 import { navigation } from '@/lib/navigation'
+import { type Result } from '@/markdoc/search.types'
 
-function SearchIcon(props) {
+type EmptyObject = Record<string, never>
+
+type Autocomplete = AutocompleteApi<
+  Result,
+  React.SyntheticEvent,
+  React.MouseEvent,
+  React.KeyboardEvent
+>
+
+function SearchIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg aria-hidden="true" viewBox="0 0 20 20" {...props}>
       <path d="M16.293 17.707a1 1 0 0 0 1.414-1.414l-1.414 1.414ZM9 14a5 5 0 0 1-5-5H2a7 7 0 0 0 7 7v-2ZM4 9a5 5 0 0 1 5-5V2a7 7 0 0 0-7 7h2Zm5-5a5 5 0 0 1 5 5h2a7 7 0 0 0-7-7v2Zm8.707 12.293-3.757-3.757-1.414 1.414 3.757 3.757 1.414-1.414ZM14 9a4.98 4.98 0 0 1-1.464 3.536l1.414 1.414A6.98 6.98 0 0 0 16 9h-2Zm-1.464 3.536A4.98 4.98 0 0 1 9 14v2a6.98 6.98 0 0 0 4.95-2.05l-1.414-1.414Z" />
@@ -26,12 +41,18 @@ function SearchIcon(props) {
   )
 }
 
-function useAutocomplete({ close }) {
+function useAutocomplete({
+  close,
+}: {
+  close: (autocomplete: Autocomplete) => void
+}) {
   let id = useId()
   let router = useRouter()
-  let [autocompleteState, setAutocompleteState] = useState({})
+  let [autocompleteState, setAutocompleteState] = useState<
+    AutocompleteState<Result> | EmptyObject
+  >({})
 
-  function navigate({ itemUrl }) {
+  function navigate({ itemUrl }: { itemUrl?: string }) {
     if (!itemUrl) {
       return
     }
@@ -46,8 +67,13 @@ function useAutocomplete({ close }) {
     }
   }
 
-  let [autocomplete] = useState(() =>
-    createAutocomplete({
+  let [autocomplete] = useState<Autocomplete>(() =>
+    createAutocomplete<
+      Result,
+      React.SyntheticEvent,
+      React.MouseEvent,
+      React.KeyboardEvent
+    >({
       id,
       placeholder: 'Find something...',
       defaultActiveItemId: 0,
@@ -82,7 +108,7 @@ function useAutocomplete({ close }) {
   return { autocomplete, autocompleteState }
 }
 
-function LoadingIcon(props) {
+function LoadingIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   let id = useId()
 
   return (
@@ -111,7 +137,7 @@ function LoadingIcon(props) {
   )
 }
 
-function HighlightQuery({ text, query }) {
+function HighlightQuery({ text, query }: { text: string; query: string }) {
   return (
     <Highlighter
       highlightClassName="group-aria-selected:underline bg-transparent text-sky-600 dark:text-sky-400"
@@ -122,14 +148,24 @@ function HighlightQuery({ text, query }) {
   )
 }
 
-function SearchResult({ result, autocomplete, collection, query }) {
+function SearchResult({
+  result,
+  autocomplete,
+  collection,
+  query,
+}: {
+  result: Result
+  autocomplete: Autocomplete
+  collection: AutocompleteCollection<Result>
+  query: string
+}) {
   let id = useId()
 
   let sectionTitle = navigation.find((section) =>
     section.links.find((link) => link.href === result.url.split('#')[0]),
   )?.title
   let hierarchy = [sectionTitle, result.pageTitle].filter(
-    (x) => typeof x === 'string',
+    (x): x is string => typeof x === 'string',
   )
 
   return (
@@ -152,7 +188,7 @@ function SearchResult({ result, autocomplete, collection, query }) {
         <div
           id={`${id}-hierarchy`}
           aria-hidden="true"
-          className="mt-0.5 truncate whitespace-nowrap text-xs text-slate-500 dark:text-slate-400"
+          className="mt-0.5 truncate text-xs whitespace-nowrap text-slate-500 dark:text-slate-400"
         >
           {hierarchy.map((item, itemIndex, items) => (
             <Fragment key={itemIndex}>
@@ -174,7 +210,15 @@ function SearchResult({ result, autocomplete, collection, query }) {
   )
 }
 
-function SearchResults({ autocomplete, query, collection }) {
+function SearchResults({
+  autocomplete,
+  query,
+  collection,
+}: {
+  autocomplete: Autocomplete
+  query: string
+  collection: AutocompleteCollection<Result>
+}) {
   if (collection.items.length === 0) {
     return (
       <p className="px-4 py-8 text-center text-sm text-slate-700 dark:text-slate-400">
@@ -202,19 +246,24 @@ function SearchResults({ autocomplete, query, collection }) {
   )
 }
 
-const SearchInput = forwardRef(function SearchInput(
-  { autocomplete, autocompleteState, onClose },
-  inputRef,
-) {
+const SearchInput = forwardRef<
+  React.ElementRef<'input'>,
+  {
+    autocomplete: Autocomplete
+    autocompleteState: AutocompleteState<Result> | EmptyObject
+    onClose: () => void
+  }
+>(function SearchInput({ autocomplete, autocompleteState, onClose }, inputRef) {
   let inputProps = autocomplete.getInputProps({ inputElement: null })
 
   return (
     <div className="group relative flex h-12">
-      <SearchIcon className="pointer-events-none absolute left-4 top-0 h-full w-5 fill-slate-400 dark:fill-slate-500" />
+      <SearchIcon className="pointer-events-none absolute top-0 left-4 h-full w-5 fill-slate-400 dark:fill-slate-500" />
       <input
         ref={inputRef}
+        data-autofocus
         className={clsx(
-          'flex-auto appearance-none bg-transparent pl-12 text-slate-900 outline-none placeholder:text-slate-400 focus:w-full focus:flex-none dark:text-white sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden',
+          'flex-auto appearance-none bg-transparent pl-12 text-slate-900 outline-hidden placeholder:text-slate-400 focus:w-full focus:flex-none sm:text-sm dark:text-white [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden',
           autocompleteState.status === 'stalled' ? 'pr-11' : 'pr-4',
         )}
         {...inputProps}
@@ -245,7 +294,13 @@ const SearchInput = forwardRef(function SearchInput(
   )
 })
 
-function CloseOnNavigation({ close, autocomplete }) {
+function CloseOnNavigation({
+  close,
+  autocomplete,
+}: {
+  close: (autocomplete: Autocomplete) => void
+  autocomplete: Autocomplete
+}) {
   let pathname = usePathname()
   let searchParams = useSearchParams()
 
@@ -256,13 +311,21 @@ function CloseOnNavigation({ close, autocomplete }) {
   return null
 }
 
-function SearchDialog({ open, setOpen, className }) {
-  let formRef = useRef(null)
-  let panelRef = useRef(null)
-  let inputRef = useRef(null)
+function SearchDialog({
+  open,
+  setOpen,
+  className,
+}: {
+  open: boolean
+  setOpen: (open: boolean) => void
+  className?: string
+}) {
+  let formRef = useRef<React.ElementRef<'form'>>(null)
+  let panelRef = useRef<React.ElementRef<'div'>>(null)
+  let inputRef = useRef<React.ElementRef<typeof SearchInput>>(null)
 
   let close = useCallback(
-    (autocomplete) => {
+    (autocomplete: Autocomplete) => {
       setOpen(false)
       autocomplete.setQuery('')
     },
@@ -280,7 +343,7 @@ function SearchDialog({ open, setOpen, className }) {
       return
     }
 
-    function onKeyDown(event) {
+    function onKeyDown(event: KeyboardEvent) {
       if (event.key === 'k' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault()
         setOpen(true)
@@ -304,10 +367,10 @@ function SearchDialog({ open, setOpen, className }) {
         onClose={() => close(autocomplete)}
         className={clsx('fixed inset-0 z-50', className)}
       >
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur" />
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" />
 
         <div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:px-6 sm:py-20 md:py-32 lg:px-8 lg:py-[15vh]">
-          <Dialog.Panel className="mx-auto transform-gpu overflow-hidden rounded-xl bg-white shadow-xl dark:bg-slate-800 dark:ring-1 dark:ring-slate-700 sm:max-w-xl">
+          <DialogPanel className="mx-auto transform-gpu overflow-hidden rounded-xl bg-white shadow-xl sm:max-w-xl dark:bg-slate-800 dark:ring-1 dark:ring-slate-700">
             <div {...autocomplete.getRootProps({})}>
               <form
                 ref={formRef}
@@ -336,7 +399,7 @@ function SearchDialog({ open, setOpen, className }) {
                 </div>
               </form>
             </div>
-          </Dialog.Panel>
+          </DialogPanel>
         </div>
       </Dialog>
     </>
@@ -344,7 +407,7 @@ function SearchDialog({ open, setOpen, className }) {
 }
 
 function useSearchProps() {
-  let buttonRef = useRef(null)
+  let buttonRef = useRef<React.ElementRef<'button'>>(null)
   let [open, setOpen] = useState(false)
 
   return {
@@ -356,7 +419,7 @@ function useSearchProps() {
     },
     dialogProps: {
       open,
-      setOpen: useCallback((open) => {
+      setOpen: useCallback((open: boolean) => {
         let { width = 0, height = 0 } =
           buttonRef.current?.getBoundingClientRect() ?? {}
         if (!open || (width !== 0 && height !== 0)) {
@@ -368,7 +431,7 @@ function useSearchProps() {
 }
 
 export function Search() {
-  let [modifierKey, setModifierKey] = useState()
+  let [modifierKey, setModifierKey] = useState<string>()
   let { buttonProps, dialogProps } = useSearchProps()
 
   useEffect(() => {
@@ -381,15 +444,15 @@ export function Search() {
     <>
       <button
         type="button"
-        className="group flex h-6 w-6 items-center justify-center sm:justify-start md:h-auto md:w-80 md:flex-none md:rounded-lg md:py-2.5 md:pl-4 md:pr-3.5 md:text-sm md:ring-1 md:ring-slate-200 md:hover:ring-slate-300 dark:md:bg-slate-800/75 dark:md:ring-inset dark:md:ring-white/5 dark:md:hover:bg-slate-700/40 dark:md:hover:ring-slate-500 lg:w-96"
+        className="group flex h-6 w-6 items-center justify-center sm:justify-start md:h-auto md:w-80 md:flex-none md:rounded-lg md:py-2.5 md:pr-3.5 md:pl-4 md:text-sm md:ring-1 md:ring-slate-200 md:hover:ring-slate-300 lg:w-96 dark:md:bg-slate-800/75 dark:md:ring-white/5 dark:md:ring-inset dark:md:hover:bg-slate-700/40 dark:md:hover:ring-slate-500"
         {...buttonProps}
       >
-        <SearchIcon className="h-5 w-5 flex-none fill-slate-400 group-hover:fill-slate-500 dark:fill-slate-500 md:group-hover:fill-slate-400" />
+        <SearchIcon className="h-5 w-5 flex-none fill-slate-400 group-hover:fill-slate-500 md:group-hover:fill-slate-400 dark:fill-slate-500" />
         <span className="sr-only md:not-sr-only md:ml-2 md:text-slate-500 md:dark:text-slate-400">
           Search docs
         </span>
         {modifierKey && (
-          <kbd className="ml-auto hidden font-medium text-slate-400 dark:text-slate-500 md:block">
+          <kbd className="ml-auto hidden font-medium text-slate-400 md:block dark:text-slate-500">
             <kbd className="font-sans">{modifierKey}</kbd>
             <kbd className="font-sans">K</kbd>
           </kbd>

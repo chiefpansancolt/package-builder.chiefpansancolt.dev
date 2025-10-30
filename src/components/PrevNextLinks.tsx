@@ -6,7 +6,7 @@ import clsx from 'clsx'
 
 import { navigation } from '@/lib/navigation'
 
-function ArrowIcon(props) {
+function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
       <path d="m9.182 13.423-1.17-1.16 3.505-3.505H3V7.065h8.517l-3.506-3.5L9.181 2.4l5.512 5.511-5.511 5.512Z" />
@@ -14,7 +14,16 @@ function ArrowIcon(props) {
   )
 }
 
-function PageLink({ title, href, dir = 'next', ...props }) {
+function PageLink({
+  title,
+  href,
+  dir = 'next',
+  ...props
+}: Omit<React.ComponentPropsWithoutRef<'div'>, 'dir' | 'title'> & {
+  title: string
+  href: string
+  dir?: 'previous' | 'next'
+}) {
   return (
     <div {...props}>
       <dt className="font-display text-sm font-medium text-slate-900 dark:text-white">
