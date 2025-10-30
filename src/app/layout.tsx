@@ -28,8 +28,7 @@ export const metadata = {
   },
   description:
     'Getting started with using Package Builder in a Salesforce environment.',
-  keywords:
-    'Package Builder, Salesforce, package.xml, LWC',
+  keywords: 'Package Builder, Salesforce, package.xml, LWC',
 }
 
 export default function RootLayout({ children }) {
