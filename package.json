@@ -15,7 +15,7 @@
     "@markdoc/markdoc": "^0.5.4",
     "@markdoc/next.js": "^0.5.0",
     "@sindresorhus/slugify": "^3.0.0",
-    "@tailwindcss/postcss": "^4.1.16",
+    "@tailwindcss/postcss": "^4.1.17",
     "@tailwindcss/typography": "^0.5.19",
     "@types/react-highlight-words": "^0.20.0",
     "@vercel/analytics": "^1.5.0",
