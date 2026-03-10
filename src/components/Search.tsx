@@ -9,6 +9,7 @@ import {
   useId,
   useRef,
   useState,
+  useSyncExternalStore,
 } from 'react'
 import Highlighter from 'react-highlight-words'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
@@ -22,7 +23,7 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 import clsx from 'clsx'
 
 import { navigation } from '@/lib/navigation'
-import { type Result } from '@/markdoc/search.types'
+import { type Result } from '@/markdoc/search.mjs'
 
 type EmptyObject = Record<string, never>
 
@@ -223,7 +224,7 @@ function SearchResults({
     return (
       <p className="px-4 py-8 text-center text-sm text-slate-700 dark:text-slate-400">
         No results for &ldquo;
-        <span className="break-words text-slate-900 dark:text-white">
+        <span className="wrap-break-word text-slate-900 dark:text-white">
           {query}
         </span>
         &rdquo;
@@ -323,6 +324,7 @@ function SearchDialog({
   let formRef = useRef<React.ElementRef<'form'>>(null)
   let panelRef = useRef<React.ElementRef<'div'>>(null)
   let inputRef = useRef<React.ElementRef<typeof SearchInput>>(null)
+  let [inputElement, setInputElement] = useState<HTMLInputElement | null>(null)
 
   let close = useCallback(
     (autocomplete: Autocomplete) => {
@@ -375,11 +377,14 @@ function SearchDialog({
               <form
                 ref={formRef}
                 {...autocomplete.getFormProps({
-                  inputElement: inputRef.current,
+                  inputElement,
                 })}
               >
                 <SearchInput
-                  ref={inputRef}
+                  ref={(node) => {
+                    inputRef.current = node
+                    setInputElement(node)
+                  }}
                   autocomplete={autocomplete}
                   autocompleteState={autocompleteState}
                   onClose={() => setOpen(false)}
@@ -430,15 +435,19 @@ function useSearchProps() {
   }
 }
 
-export function Search() {
-  let [modifierKey, setModifierKey] = useState<string>()
-  let { buttonProps, dialogProps } = useSearchProps()
+const emptySubscribe = () => () => {}
 
-  useEffect(() => {
-    setModifierKey(
-      /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) ? '⌘' : 'Ctrl ',
-    )
-  }, [])
+function getModifierKey() {
+  return /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) ? '⌘' : 'Ctrl '
+}
+
+export function Search() {
+  let modifierKey = useSyncExternalStore(
+    emptySubscribe,
+    getModifierKey,
+    () => undefined,
+  )
+  let { buttonProps, dialogProps } = useSearchProps()
 
   return (
     <>

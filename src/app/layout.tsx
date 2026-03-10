@@ -1,8 +1,9 @@
-import { Analytics } from '@vercel/analytics/react'
+import { type Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import clsx from 'clsx'
 
+import { Analytics } from '@vercel/analytics/next'
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 
@@ -21,7 +22,7 @@ const lexend = localFont({
   variable: '--font-lexend',
 })
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     template: '%s - Docs',
     default: 'Package Builder',
@@ -29,9 +30,21 @@ export const metadata = {
   description:
     'Getting started with using Package Builder in a Salesforce environment.',
   keywords: 'Package Builder, Salesforce, package.xml, LWC',
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html
       lang="en"
@@ -39,26 +52,6 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <head>
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="manifest" href="/site.webmanifest" />
-
         <script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
@@ -76,11 +69,9 @@ export default function RootLayout({ children }) {
       </head>
       <body className="flex min-h-full bg-white dark:bg-slate-900">
         <Providers>
-          <Layout>
-            {children}
-            <Analytics />
-          </Layout>
+          <Layout>{children}</Layout>
         </Providers>
+        <Analytics />
       </body>
     </html>
   )

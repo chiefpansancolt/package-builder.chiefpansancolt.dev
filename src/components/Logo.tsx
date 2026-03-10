@@ -1,4 +1,4 @@
-export function Logomark(props: React.SVGProps<SVGSVGElement>) {
+export function Logomark(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +86,7 @@ export function Logomark(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-export function Logo(props: React.SVGProps<SVGSVGElement>) {
+export function Logo(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

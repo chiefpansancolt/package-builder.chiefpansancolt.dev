@@ -1,32 +1,31 @@
-<h1 align="center">
-  <a href="https://package-builder.chiefpansancolt.dev" target="_blank">package-builder.chiefpansancolt.dev</a>
-</h1>
+# Package Builder - Documentation Site
 
-[![GitHub Workflow Deploy Status](https://img.shields.io/github/actions/workflow/status/chiefpansancolt/package-builder.chiefpansancolt.dev/deploy.yml?label=Deploy&logo=github&style=flat-square)](https://github.com/chiefpansancolt/package-builder.chiefpansancolt.dev/actions/workflows/deploy.yml)
-[![GitHub Workflow Build Status](https://img.shields.io/github/actions/workflow/status/chiefpansancolt/package-builder.chiefpansancolt.dev/build.yml?label=Build&logo=github&style=flat-square)](https://github.com/chiefpansancolt/package-builder.chiefpansancolt.dev/actions/workflows/build.yml)
-[![GitHub Workflow Lint Status](https://img.shields.io/github/actions/workflow/status/chiefpansancolt/package-builder.chiefpansancolt.dev/lints.yml?label=Lints&logo=github&style=flat-square)](https://github.com/chiefpansancolt/package-builder.chiefpansancolt.dev/actions/workflows/lints.yml)
-[![CodeQL](https://github.com/chiefpansancolt/package-builder.chiefpansancolt.dev/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/chiefpansancolt/package-builder.chiefpansancolt.dev/actions/workflows/github-code-scanning/codeql)
+Documentation site for the [Package Builder](https://github.com/chiefpansancolt/package-builder) Salesforce tool.
 
-> My website, created with Next.js, TailwindCSS, and TailwindUI using Syntax Template
+Built with [Next.js](https://nextjs.org), [Tailwind CSS](https://tailwindcss.com), and [Markdoc](https://markdoc.io).
 
-## Prerequisites
+## Development
 
-### JavaScript
+Install dependencies:
 
-<p>
-  <img src="https://img.shields.io/badge/node-21.x.x-blue.svg" />
-  <img src="https://img.shields.io/badge/pnpm-8.x.x-blue.svg" />
-</p>
+```bash
+npm install
+```
 
-## Author
+Run the development server:
 
-👤 **Christopher Pezza**
+```bash
+npm run dev
+```
 
-- Website: https://chiefpansancolt.dev
-- Twitter: [@chiefpansancolt](https://twitter.com/chiefpansancolt)
-- Github: [@chiefpansancolt](https://github.com/chiefpansancolt)
-- LinkedIn: [pezzachristopher](https://linkedin.com/in/pezzachristopher)
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-## Show your support
+## Build
 
-Give a ⭐️ if this project helped you!
+```bash
+npm run build
+```
+
+## Deployed Site
+
+[https://package-builder.chiefpansancolt.dev](https://package-builder.chiefpansancolt.dev)

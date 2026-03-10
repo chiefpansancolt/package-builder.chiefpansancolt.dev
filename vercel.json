@@ -1,7 +1,7 @@
 {
-  "buildCommand": "next build",
-  "devCommand": "next dev",
-  "installCommand": "pnpm install",
+  "buildCommand": "next build --webpack",
+  "devCommand": "next dev --webpack",
+  "installCommand": "npm install",
   "framework": "nextjs",
   "git": {
     "deploymentEnabled": {
