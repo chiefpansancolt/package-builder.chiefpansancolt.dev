@@ -21,14 +21,37 @@ const lexend = localFont({
   variable: '--font-lexend',
 })
 
+const siteUrl = 'https://package-builder.chiefpansancolt.dev'
+const siteDescription =
+  'Getting started with using Package Builder in a Salesforce environment.'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     template: '%s - Docs',
     default: 'Package Builder',
   },
-  description:
-    'Getting started with using Package Builder in a Salesforce environment.',
-  keywords: 'Package Builder, Salesforce, package.xml, LWC',
+  description: siteDescription,
+  keywords: ['Package Builder', 'Salesforce', 'package.xml', 'LWC'],
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'Package Builder',
+    title: 'Package Builder',
+    description: siteDescription,
+    url: siteUrl,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Package Builder',
+    description: siteDescription,
+  },
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -37,6 +60,15 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: 'Package Builder',
+  description: siteDescription,
+  codeRepository: 'https://github.com/chiefpansancolt/package-builder',
+  programmingLanguage: 'Apex',
 }
 
 export default function RootLayout({
@@ -51,6 +83,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full bg-white dark:bg-slate-900">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Providers>
           <Layout>{children}</Layout>
         </Providers>

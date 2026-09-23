@@ -2,7 +2,7 @@
 title: Installation
 nextjs:
   metadata:
-    title: Simplecov Tailwindcss - Installation
+    title: Package Builder - Installation
     description: Steps for install and setting up package builder.
 ---
 

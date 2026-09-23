@@ -2,7 +2,7 @@
 title: Change Log
 nextjs:
   metadata:
-    title: Simplecov Tailwindcss - Change Log
+    title: Package Builder - Change Log
     description: See what has changed from release to release.
 ---
 

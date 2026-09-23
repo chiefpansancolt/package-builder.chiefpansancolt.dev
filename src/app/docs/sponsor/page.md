@@ -2,7 +2,7 @@
 title: Sponsor
 nextjs:
   metadata:
-    title: Simplecov Tailwindcss - Sponsor
+    title: Package Builder - Sponsor
     description: Another way to contribute is by sponsoring this project.
 ---
 

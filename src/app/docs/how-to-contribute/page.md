@@ -2,7 +2,7 @@
 title: How to contribute
 nextjs:
   metadata:
-    title: Simplecov Tailwindcss - How to contribute
+    title: Package Builder - How to contribute
     description: See whats ways you can contribute to the project.
 ---
 

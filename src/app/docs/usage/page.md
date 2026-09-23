@@ -2,7 +2,7 @@
 title: How to Use
 nextjs:
   metadata:
-    title: Simplecov Tailwindcss - How to Use
+    title: Package Builder - How to Use
     description: Learn how to use Package Builder to the fullest.
 ---
 
