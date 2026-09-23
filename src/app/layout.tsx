@@ -50,31 +50,10 @@ export default function RootLayout({
       className={clsx('h-full antialiased', inter.variable, lexend.variable)}
       suppressHydrationWarning
     >
-      <head>
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
-          `,
-          }}
-        />
-      </head>
       <body className="flex min-h-full bg-white dark:bg-slate-900">
         <Providers>
           <Layout>{children}</Layout>
         </Providers>
-        <script
-          defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token": "c54ee5b14ef84d2e878898010c94a9d3"}'
-        />
       </body>
     </html>
   )
